@@ -1,0 +1,155 @@
+Skill: Choose a Good Repetition Option
+When implementing a function, there are several options for repeating tasks in Python. Knowing these three methods - including for in, for in range, and while loops - can be very useful, as one approach may be a much better fit depending on the problem at hand.
+
+Let's explore each option using the following function definition:
+
+
+def create_annual_data_directories(directory_name: str, start_year: int, end_year: int) -> None:
+
+
+Option 1. for in 
+A for in loop is ideal when you have a list of items you want to iterate over directly. In this case, if we had a list of years, we could use this loop to create directories for each year.
+
+Option 2. for in range 
+A for in range loop is perfect when you want to iterate over a sequence of numbers. This method is straightforward when you're dealing with a known range of values, like a range of years.
+
+Option 3. while
+A while loop is useful when you need to keep repeating an action until a specific condition is met. This approach can be more flexible but requires careful control of the loop's exit condition to avoid infinite loops.
+
+ 
+
+Three Implementations
+ 
+
+from pathlib import Path
+
+ 
+
+def create_annual_data_directories(directory_name: str, start_year: int, end_year: int) -> None:
+
+   # Option 1 - using for in
+
+
+    years = list(range(start_year, end_year + 1))
+    
+    for year in years:
+        folder_name = f"{directory_name}/{year}"
+        Path(folder_name).mkdir(parents=True, exist_ok=True)
+        print(f"Created directory: {folder_name}")
+
+   
+
+    # Option 2 - using for in range
+
+    for year in range(start_year, end_year + 1):
+        folder_name = f"{directory_name}/{year}"
+        Path(folder_name).mkdir(parents=True, exist_ok=True)
+        print(f"Created directory: {folder_name}")
+
+ 
+
+    # Option 3 - using while
+
+    year = start_year
+    while year <= end_year:
+        folder_name = f"{directory_name}/{year}"
+        Path(folder_name).mkdir(parents=True, exist_ok=True)
+        print(f"Created directory: {folder_name}")
+        year += 1
+
+ 
+
+# Example usage:
+create_annual_data_directories("data", 2021, 2024)
+
+ 
+
+Please review these options in your book - we will not duplicate all the information about these three options here. 
+
+Strive to understand when an option is a good fit. 
+
+Use Cases for Each Option
+for in: Best when iterating over a predefined collection (like a list of years).
+for in range: Ideal for iterating over a sequence of numbers (like years within a given range).
+while: Useful when you need to repeat an action until a condition changes (like incrementing a year until it matches the end year).
+
+Skill: Know How to Break Out of a Loop
+In data analytics, we often work with large datasets, and sometimes we don't need to process every single item. Instead, we might want to stop as soon as we find the data we’re looking for. This is where the break statement becomes very useful.
+
+Simple Example: Finding a Target Value
+
+Imagine you're analyzing a list of sales figures, and you're only interested in finding the first sale that exceeds a certain threshold. Once you find that sale, you can stop searching.
+
+
+sales = [200, 1500, 3000, 100, 5000]
+
+for sale in sales:
+    if sale > 2500:
+        print(f"Found a sale above the threshold: {sale}")
+        break  # Exit the loop as soon as we find the first sale above 2500
+ 
+
+What Happens Here?
+The loop starts checking each sale in the list.
+When it reaches 3000, it meets the condition sale > 2500.
+The print statement is executed, and then the break statement exits the loop.
+Even though there’s another sale (5000) that meets the condition, the loop doesn’t continue because break stops it immediately after finding the first match.
+Why Is This Useful?
+You don't waste time processing every item if you’ve already found what you need.
+You focus on the most relevant data without getting bogged down by unnecessary processing.
+
+Skill: Know How to Continue with Next List Item
+In data analytics, sometimes you need to skip over certain data points and focus on the ones that matter.
+
+The continue statement allows you to do just that by skipping the rest of the current loop iteration and moving on to the next item. This is especially useful when you want to filter out certain data without stopping the entire process.
+
+Simple Example: Skipping Low Sales Figures
+Imagine you're analyzing a list of sales figures, but you only care about sales above a certain threshold. You want to skip any sales that are too low and only process the ones that are significant.
+
+
+sales = [200, 1500, 3000, 100, 5000]
+
+for sale in sales:
+    if sale < 1000:
+        continue  # Skip sales that are less than 1000
+    print(f"Processing significant sale: {sale}")
+What Happens Here?
+The loop starts by checking each sale in the list.
+If a sale is less than 1000, the continue statement is triggered, and the loop skips the print statement for that iteration.
+The loop then moves on to the next sale.
+Only sales that are 1000 or greater are processed and printed.
+ 
+
+Why Is This Useful?
+The loop only processes the data that meets your criteria, saving time and resources.
+
+We can build a simple Python script that continuously monitors a folder for the arrival of a specific file. The script will:
+
+Start running and enter a loop that keeps it going indefinitely.
+Check the specified folder to see if the file (e.g., sales_data.csv) is there.
+If the file is found, it will print a message and stop the loop, signaling that it’s time to start the analysis.
+If the file is not found, the script will wait for a short period (e.g., 10 seconds) before checking again.
+
+Example
+
+Here’s some Python code that implements this logic.
+
+
+import os
+import time
+
+folder_to_monitor = "live_data"
+
+while True:
+    if 'sales_data.csv' in os.listdir(folder_to_monitor):
+        print("File arrived. Starting analysis.")
+        break  # Stop the loop once the file is found
+    else:
+        print("File not yet arrived. Checking again in 10 seconds.")
+        time.sleep(10)  # Wait 10 seconds before checking again
+ 
+
+What Does This Code Do?
+The while True: loop keeps the script running indefinitely, making it perfect for tasks where you need to keep checking for something over time.
+The os.listdir(folder_to_monitor) function lists all the files in the folder you're monitoring. If the file 'sales_data.csv' is in that list, the script prints a message and breaks out of the loop.
+If the file isn’t found, the script pauses for 10 seconds (using time.sleep(10)) before checking the folder again.
